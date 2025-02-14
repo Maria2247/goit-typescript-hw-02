@@ -1,23 +1,24 @@
+import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { fetchUnsplashImages } from "../../helpers/images-api";
+import { IImage, Query } from "./App.types";
+
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loader from "../Loader/Loader";
-import toast, { Toaster } from "react-hot-toast";
-import ImageModal from "../ImageModal/ImageModal";
-import { useState, useEffect } from "react";
-import { fetchUnsplashImages } from "../../helpers/images-api";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import { IImage, Query } from "./App.types";
+import ImageModal from "../ImageModal/ImageModal";
 
-export default function App() {
+export default function App(): React.ReactElement {
   const [images, setImages] = useState<IImage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [maxPage, setMaxPage] = useState<number>(0);
+  const [inputValue, setInputValue] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(0);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [largeImg, setLargeImg] = useState<string | null>(null);
-  const [inputValue, setInputValue] = useState<string>("");
   const [showBtn, setShowBtn] = useState<boolean>(false);
 
   const openModal = (largeImg: string) => {
@@ -42,7 +43,7 @@ export default function App() {
 
   useEffect(() => {
     if (inputValue === "") return;
-    // () => onClick(regular)
+
     async function getImages() {
       try {
         setLoading(true);
@@ -51,13 +52,10 @@ export default function App() {
 
         if (queryResult.results.length === 0) {
           setShowBtn(false);
-          const notify = () => {
-            toast("Oops, couldn't find anything", { duration: 2000 });
-          };
-          return notify();
+          toast("Oops, couldn't find anything", { duration: 2000 });
+          return;
         }
         setImages((prevImages) => {
-          console.log("🚀  queryResult:", queryResult);
           return [...prevImages, ...queryResult.results];
         });
         setMaxPage(queryResult.total_pages);
@@ -77,7 +75,6 @@ export default function App() {
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
-      {error && <ErrorMessage />}
       {images.length > 0 && (
         <ImageGallery imageObj={images} onClick={openModal} />
       )}
@@ -89,6 +86,11 @@ export default function App() {
       />
       {showBtn && <LoadMoreBtn onClick={handleLoadMore} id="app" />}
       <Toaster />
+      {error && <ErrorMessage />}
     </div>
   );
 }
+
+// <div>
+//
+// </div>

@@ -4,17 +4,17 @@ import React from "react";
 
 Modal.setAppElement("#root");
 
-// type Props = {
-//   isOpen: any;
-//   closeModal: any;
-//   imageUrl: any;
-// };: React.FC<Props>
+type Props = {
+  isOpen: boolean;
+  closeModal: () => void;
+  imageUrl: string | null;
+};
 
 export default function ImageModal({
   isOpen,
   closeModal,
   imageUrl,
-}): React.ReactElement {
+}: Props): React.ReactElement {
   const customStyles = {
     content: {
       top: "50%",

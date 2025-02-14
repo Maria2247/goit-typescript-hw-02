@@ -3,15 +3,16 @@ import css from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 
-// // import { act } from "react";
-type SearchBarProps = {
+interface SearchBarProps {
   onSubmit: (query: string) => void;
-};
+}
 type FormValues = {
   query: string;
 };
 
-export default function SearchBar({ onSubmit }: SearchBarProps) {
+export default function SearchBar({
+  onSubmit,
+}: SearchBarProps): React.ReactElement {
   const initialValues: FormValues = { query: "" };
   return (
     <header className={css.header}>
@@ -46,11 +47,3 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
     </header>
   );
 }
-
-// import React from "react";
-
-// const TestComponent: React.createElement = () => {
-//   return <div>Hello, world!</div>;
-// };
-
-// export default TestComponent;
